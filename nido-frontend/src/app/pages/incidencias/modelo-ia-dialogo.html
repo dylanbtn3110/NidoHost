@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Modelo de inteligencia artificial</h2>
+<mat-dialog-content>
+  @if (modelo(); as m) {
+    <p class="nombre">{{ m.modelo }}</p>
+    <p class="mensaje-ayuda">
+      <strong>Naive Bayes:</strong> cuenta qué palabras aparecen más en cada categoría y prioridad, y con eso calcula
+      qué categoría y prioridad es más probable para una descripción nueva.
+    </p>
+
+    <dl class="datos">
+      <div><dt>Muestras de entrenamiento</dt><dd>{{ m.muestras }}</dd></div>
+      <div><dt>De la base de datos</dt><dd>{{ m.muestrasDeLaBaseDeDatos }}</dd></div>
+      <div><dt>Entrenado el</dt><dd>{{ m.entrenadoEn | date: 'dd/MM/yyyy HH:mm' }}</dd></div>
+    </dl>
+
+    <h3>Precisión</h3>
+    @for (p of [
+      { nombre: 'Categoría', valor: m.precisionCategoria },
+      { nombre: 'Prioridad exacta', valor: m.precisionPrioridad },
+      { nombre: 'Prioridad cercana (±1 nivel)', valor: m.precisionPrioridadCercana }
+    ]; track p.nombre) {
+      <div class="precision">
+        <span>{{ p.nombre }}</span><strong>{{ porcentaje(p.valor) }}%</strong>
+        <mat-progress-bar mode="determinate" [value]="porcentaje(p.valor)" />
+      </div>
+    }
+
+    <h3>Categorías que conoce</h3>
+    <div class="lista">@for (c of m.categorias; track c) { <span class="etiqueta">{{ c }}</span> }</div>
+    <h3>Prioridades que conoce</h3>
+    <div class="lista">@for (p of m.prioridades; track p) { <span class="etiqueta">{{ p }}</span> }</div>
+  } @else {
+    <div class="cargando"><mat-spinner diameter="36" /></div>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  @if (esAdmin) {
+    <button mat-stroked-button [disabled]="entrenando() || !modelo()" (click)="reentrenar()">
+      <mat-icon>model_training</mat-icon> Reentrenar con las incidencias registradas
+    </button>
+  }
+  <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

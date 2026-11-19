@@ -1,0 +1,100 @@
+<div class="pagina">
+  <div class="encabezado">
+    <div>
+      <h1>Pagos</h1>
+      <p>Ingresos y gastos asociados a las reservas</p>
+    </div>
+    <button mat-flat-button (click)="abrir()"><mat-icon>add</mat-icon> Nuevo pago</button>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi">
+      <span class="etiqueta">Ingresos pagados</span>
+      <span class="valor">{{ ingresos() | currency: 'PEN' : 'symbol-narrow' : '1.2-2' }}</span>
+    </div>
+    <div class="kpi">
+      <span class="etiqueta">Gastos pagados</span>
+      <span class="valor">{{ gastos() | currency: 'PEN' : 'symbol-narrow' : '1.2-2' }}</span>
+    </div>
+    <div class="kpi">
+      <span class="etiqueta">Neto</span>
+      <span class="valor">{{ neto() | currency: 'PEN' : 'symbol-narrow' : '1.2-2' }}</span>
+      <span class="detalle">Ingresos menos gastos</span>
+    </div>
+    <div class="kpi">
+      <span class="etiqueta">Pendiente de cobro</span>
+      <span class="valor">{{ pendiente() | currency: 'PEN' : 'symbol-narrow' : '1.2-2' }}</span>
+      <span class="detalle">Ingresos aún no pagados</span>
+    </div>
+  </div>
+
+  <div class="herramientas">
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Tipo</mat-label>
+      <mat-select [ngModel]="filtroTipo()" (ngModelChange)="filtroTipo.set($event)">
+        <mat-option value="">Todos</mat-option>
+        @for (t of tipos; track t) { <mat-option [value]="t">{{ t }}</mat-option> }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Estado</mat-label>
+      <mat-select [ngModel]="filtroEstado()" (ngModelChange)="filtroEstado.set($event)">
+        <mat-option value="">Todos</mat-option>
+        @for (e of estados; track e) { <mat-option [value]="e">{{ e }}</mat-option> }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando"><mat-spinner diameter="36" /></div>
+  } @else {
+    <div class="tarjeta-tabla">
+      <table mat-table [dataSource]="lista()">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let p">{{ p.idPago }}</td>
+        </ng-container>
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let p">{{ p.fecha | date: 'dd/MM/yyyy HH:mm' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="reserva">
+          <th mat-header-cell *matHeaderCellDef>Reserva</th>
+          <td mat-cell *matCellDef="let p">#{{ p.reserva.idReserva }} · {{ p.reserva.alojamiento?.nombre }}</td>
+        </ng-container>
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef>Tipo</th>
+          <td mat-cell *matCellDef="let p"><app-estado [valor]="p.tipo" /></td>
+        </ng-container>
+        <ng-container matColumnDef="importe">
+          <th mat-header-cell *matHeaderCellDef>Importe</th>
+          <td mat-cell *matCellDef="let p">{{ p.importe | currency: 'PEN' : 'symbol-narrow' : '1.2-2' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="moneda">
+          <th mat-header-cell *matHeaderCellDef>Moneda</th>
+          <td mat-cell *matCellDef="let p">{{ p.moneda }}</td>
+        </ng-container>
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let p"><app-estado [valor]="p.estado" /></td>
+        </ng-container>
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let p" class="acciones">
+            <button mat-icon-button matTooltip="Editar" aria-label="Editar" (click)="abrir(p)"><mat-icon>edit</mat-icon></button>
+            @if (p.estado !== 'ANULADO') {
+              <button mat-icon-button matTooltip="Anular" aria-label="Anular" (click)="anular(p)"><mat-icon>cancel</mat-icon></button>
+            }
+            <button mat-icon-button matTooltip="Eliminar" aria-label="Eliminar" (click)="eliminar(p)"><mat-icon>delete</mat-icon></button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let fila; columns: columnas"></tr>
+      </table>
+      @if (lista().length === 0) {
+        <div class="vacio">No hay pagos que coincidan con los filtros.</div>
+      }
+    </div>
+  }
+</div>

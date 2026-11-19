@@ -1,0 +1,87 @@
+<h2 mat-dialog-title>{{ incidencia ? 'Editar incidencia' : 'Nueva incidencia' }}</h2>
+<form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+  <mat-dialog-content>
+    <div class="form-dialogo">
+      <mat-form-field>
+        <mat-label>Alojamiento</mat-label>
+        <mat-select formControlName="idAlojamiento">
+          @for (a of alojamientos(); track a.idAlojamiento) { <mat-option [value]="a.idAlojamiento">{{ a.nombre }}</mat-option> }
+        </mat-select>
+        <mat-error>Elija el alojamiento</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Descripción</mat-label>
+        <textarea matInput rows="3" formControlName="descripcion" maxlength="500"
+                  placeholder="Cuente qué pasó, por ejemplo: huele a gas en la cocina"></textarea>
+        <mat-hint align="end">{{ form.controls.descripcion.value.length }}/500</mat-hint>
+        @if (form.controls.descripcion.hasError('required')) { <mat-error>Describa la incidencia</mat-error> }
+        @else if (form.controls.descripcion.hasError('minlength')) { <mat-error>Escriba al menos 5 caracteres</mat-error> }
+      </mat-form-field>
+
+      <div class="boton-ia">
+        <button mat-stroked-button type="button" [disabled]="!descripcionLarga() || pensando()" (click)="pedirSugerencia()">
+          <mat-icon>auto_awesome</mat-icon> Sugerir con IA
+        </button>
+      </div>
+
+      @if (pensando()) {
+        <div class="sugerencia pensando">
+          <mat-icon>auto_awesome</mat-icon> La IA está analizando la descripción...
+          <mat-progress-bar mode="indeterminate" />
+        </div>
+      } @else if (sugerencia(); as s) {
+        <div class="sugerencia">
+          <div class="titulo"><mat-icon>auto_awesome</mat-icon> Sugerencia de la IA</div>
+          <div class="medidas">
+            <div>
+              <span class="etiqueta">Categoría</span>
+              <app-estado [valor]="s.categoria" />
+              <div class="confianza"><mat-progress-bar mode="determinate" [value]="porcentaje(s.confianzaCategoria)" />
+                <span>{{ porcentaje(s.confianzaCategoria) }}% de confianza</span></div>
+            </div>
+            <div>
+              <span class="etiqueta">Prioridad</span>
+              <app-estado [valor]="s.prioridad" />
+              <div class="confianza"><mat-progress-bar mode="determinate" [value]="porcentaje(s.confianzaPrioridad)" />
+                <span>{{ porcentaje(s.confianzaPrioridad) }}% de confianza</span></div>
+            </div>
+          </div>
+          @if (s.palabrasClave.length) {
+            <div class="palabras">
+              <span class="etiqueta">Palabras que pesaron:</span>
+              @for (clave of s.palabrasClave; track clave) { <span class="palabra">{{ palabra(clave) }}</span> }
+            </div>
+          }
+          <div class="pie">
+            <small>La IA solo sugiere: usted decide.</small>
+            <button mat-flat-button type="button" [disabled]="aplicada()" (click)="aplicar()">
+              {{ aplicada() ? 'Sugerencia aplicada' : 'Aplicar sugerencia' }}
+            </button>
+          </div>
+        </div>
+      }
+
+      <div class="fila-form">
+        <mat-form-field>
+          <mat-label>Categoría</mat-label>
+          <mat-select formControlName="categoria" (selectionChange)="elegirManual()">
+            @for (c of categorias; track c) { <mat-option [value]="c">{{ c }}</mat-option> }
+          </mat-select>
+          <mat-error>Elija la categoría</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Prioridad</mat-label>
+          <mat-select formControlName="prioridad" (selectionChange)="elegirManual()">
+            @for (p of prioridades; track p) { <mat-option [value]="p">{{ p }}</mat-option> }
+          </mat-select>
+          <mat-error>Elija la prioridad</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" mat-dialog-close>Cancelar</button>
+    <button mat-flat-button type="submit" [disabled]="guardando()">Guardar</button>
+  </mat-dialog-actions>
+</form>

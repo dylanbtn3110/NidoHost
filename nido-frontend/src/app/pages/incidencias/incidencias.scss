@@ -1,0 +1,12 @@
+.botones { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.resumen { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.chip-resumen {
+  font: inherit; cursor: pointer; background: #fff; border: 1px solid var(--nido-borde); border-radius: 999px;
+  padding: 6px 16px; color: var(--nido-gris);
+  strong { color: var(--nido-petroleo); font-size: 17px; margin-right: 4px; }
+  &.activo { border-color: var(--nido-petroleo); background: var(--mat-sys-primary-container); }
+}
+
+td, th { padding: 0 10px; }
+.descripcion { display: block; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

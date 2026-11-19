@@ -151,13 +151,15 @@ negocio sin base de datos. Postman prueba la API completa de punta a punta."
 
 ## 8. Frontend
 
-- HTML, CSS y JavaScript sin frameworks (Angular queda para el Sprint 3).
-- `css/nido.css` aplica la guía de estilo de Figma: azul petróleo `#0F4C5C`, ámbar `#E09F3E`, Poppins e Inter,
-  espaciado de 8 px, radios de 8/12/16 px, breakpoints 1200/1024/768/480.
-- `js/nido.js`: guarda el token, llama a la API, arma el menú según las opciones del rol, muestra toasts de 4 s y
-  confirmaciones antes de eliminar.
+- **Angular 22 + Angular Material** (carpeta `nido-frontend`, ver su README). Standalone, signals, formularios reactivos, carga
+  diferida por pantalla, interceptores (token y errores) y guards (sesión y rol). Gráficos con Chart.js y mapa con Leaflet.
+- `npm run empaquetar` copia el build a `Nido/src/main/resources/static`: un solo jar sirve la API y la aplicación.
+- Las rutas usan `#` para que recargar la página funcione sin configurar el servidor.
+- El prototipo anterior en HTML, CSS y JavaScript fue reemplazado por esta aplicación.
+- `src/styles.scss` aplica la guía de estilo de Figma: azul petróleo `#0F4C5C`, ámbar `#E09F3E`, Poppins e Inter.
 - **Los formularios envían exactamente los campos del JSON del endpoint** (requisito del profesor).
-- Vista móvil para el personal (`tareas.html`): checklist táctil, cámara para fotos y barra inferior.
+- Vista móvil para el personal (`/mis-tareas`): checklist táctil, cámara para las fotos y botones grandes.
+- Pruebas del frontend: 13 pruebas unitarias con Vitest (`npm test`): sesión, guards, fechas y chip de estado.
 
 ---
 
@@ -168,6 +170,7 @@ negocio sin base de datos. Postman prueba la API completa de punta a punta."
 mysql -u root -p < database/bd_nido.sql
 # Ejecutar el backend
 ./mvnw spring-boot:run
+# Frontend Angular (desde nido-frontend): npm start | npm test | npm run empaquetar
 # Ejecutar las pruebas unitarias (con MySQL encendido)
 ./mvnw test
 # Ejecutar la colección de Postman por consola

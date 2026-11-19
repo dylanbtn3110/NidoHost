@@ -1,0 +1,1 @@
+import{Gt as D}from"./main-LFFLPQ66.js";var n=Symbol(`FIELD_TREE`);function se(e){return typeof e==`function`&&e[n]===!0}var oe=new D(``);export{se as n,oe as t};

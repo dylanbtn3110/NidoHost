@@ -1,0 +1,45 @@
+.contenedor { height: 100vh; background: var(--nido-fondo); }
+
+.menu {
+  width: 248px;
+  background: var(--nido-petroleo);
+  color: #fff;
+  border-radius: 0;
+  border: 0;
+}
+
+.marca {
+  display: flex; align-items: center; gap: 12px; padding: 20px 20px 16px;
+  font: 600 22px/1 Poppins, sans-serif;
+}
+
+nav { display: flex; flex-direction: column; gap: 2px; padding: 8px 12px; }
+
+.enlace {
+  display: flex; align-items: center; gap: 14px; padding: 11px 14px; border-radius: 10px;
+  color: rgba(255, 255, 255, .82); text-decoration: none; font-size: 14.5px;
+  &:hover { background: rgba(255, 255, 255, .09); color: #fff; }
+  &.activo { background: rgba(255, 255, 255, .16); color: #fff; font-weight: 600; }
+  mat-icon { color: var(--nido-ambar); }
+}
+
+.barra {
+  background: #fff; border-bottom: 1px solid var(--nido-borde); position: sticky; top: 0; z-index: 2;
+  .espacio { flex: 1; }
+}
+
+.usuario {
+  display: flex; align-items: center; gap: 10px; padding: 6px 10px; border: 0; background: none; cursor: pointer;
+  border-radius: 10px; font: inherit; color: inherit;
+  &:hover { background: var(--nido-fondo); }
+  .avatar {
+    display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--nido-petroleo); color: #fff; font-size: 13px; font-weight: 600;
+  }
+  .datos { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.25; text-align: left;
+    small { color: var(--nido-gris); font-size: 11px; letter-spacing: .04em; } }
+}
+
+.contenido { min-height: calc(100vh - 64px); }
+
+@media (max-width: 600px) { .usuario .datos { display: none; } }

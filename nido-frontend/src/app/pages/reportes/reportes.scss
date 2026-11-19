@@ -1,0 +1,33 @@
+// En pantallas angostas la rejilla global (380px minimo) se desbordaba: el minimo nunca supera el ancho disponible.
+.rejilla-graficos { grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr)); margin-bottom: 24px; }
+.rejilla-graficos > * { min-width: 0; }
+
+.acciones-reporte { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.periodo { margin-bottom: 16px; }
+.periodo .herramientas { margin-bottom: 12px; }
+.periodo .herramientas mat-form-field { width: 180px; }
+.error { color: #9B2C20; font-size: 13px; margin: 10px 0 0; }
+
+.rango { color: var(--nido-gris); margin: 0 0 12px; }
+.actualizando { opacity: .55; transition: opacity .2s; }
+
+.kpi .valor.gasto { color: var(--nido-ambar); }
+.kpi .valor.pendiente { color: #8A5A00; }
+.kpi .valor.positivo { color: #1D6B3D; }
+.kpi .valor.negativo { color: #9B2C20; }
+
+.atraso {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 0;
+  border-bottom: 1px solid var(--nido-borde);
+  div { display: flex; flex-direction: column; }
+  small { color: var(--nido-gris); }
+}
+
+.titulo-tabla { font-size: 18px; margin: 0 0 12px; }
+.numero { text-align: right; white-space: nowrap; }
+td[mat-footer-cell] { font-weight: 600; }
+
+@media print {
+  .no-imprimir { display: none; }
+}

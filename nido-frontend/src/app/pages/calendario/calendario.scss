@@ -1,0 +1,34 @@
+.navegacion { display: flex; align-items: center; gap: 4px; margin-right: 12px; }
+.mes { margin: 0 8px; min-width: 150px; text-align: center; font-size: 18px; text-transform: capitalize; }
+
+.leyenda { display: flex; gap: 16px; margin-left: auto; color: var(--nido-gris); font-size: 13px; }
+.punto { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; background: var(--nido-petroleo); }
+.punto.servicio { background: var(--nido-ambar); }
+
+.cuadricula-caja { padding: 0; overflow: hidden; }
+.cuadricula { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.encabezado-dia { padding: 8px; text-align: center; font-weight: 600; font-size: 13px; color: var(--nido-gris); background: var(--nido-fondo); border-bottom: 1px solid var(--nido-borde); }
+
+.dia {
+  min-height: 104px; padding: 6px; display: flex; flex-direction: column; gap: 3px;
+  border-right: 1px solid var(--nido-borde); border-bottom: 1px solid var(--nido-borde); min-width: 0;
+  &:nth-child(7n + 14) { border-right: none; }
+  &.otro-mes { background: #FAFBFB; .numero { opacity: .4; } .evento { opacity: .5; } }
+  &.hoy { background: #FFF8E8; .numero { background: var(--nido-petroleo); color: #fff; } }
+}
+.numero { align-self: flex-start; min-width: 24px; height: 24px; line-height: 24px; text-align: center; border-radius: 12px; font-size: 13px; font-weight: 600; }
+
+.evento {
+  display: block; padding: 2px 6px; border-radius: 4px; font-size: 11.5px; line-height: 1.4; color: #fff; background: var(--nido-petroleo);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  &.servicio { background: var(--nido-ambar); color: #3B2A06; }
+}
+
+.titulo-lista { margin: 24px 0 12px; font-size: 16px; font-weight: 600; }
+
+// En pantallas pequenas solo se muestra la lista
+@media (max-width: 700px) {
+  .cuadricula-caja { display: none; }
+  .leyenda { display: none; }
+  .titulo-lista { margin-top: 8px; }
+}

@@ -1,0 +1,5 @@
+.aviso {
+  display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 8px; margin-bottom: 18px; font-size: 14px;
+  &.bueno { background: #DFF3E3; color: #1D6B3D; }
+  &.malo { background: #FBE3DF; color: #9B2C20; }
+}

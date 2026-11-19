@@ -1,0 +1,109 @@
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (primary: mat.$cyan-palette, tertiary: mat.$orange-palette),
+    typography: (plain-family: 'Inter, sans-serif', brand-family: 'Poppins, sans-serif', bold-weight: 600, medium-weight: 500, regular-weight: 400),
+    density: 0,
+  ));
+
+  // Colores de Nido (guia de estilo de Figma)
+  --nido-petroleo: #0F4C5C;
+  --nido-ambar: #E09F3E;
+  --nido-fondo: #F3F6F7;
+  --nido-gris: #5B6B73;
+  --nido-borde: #DDE4E7;
+  --mat-sys-primary: #0F4C5C;
+  --mat-sys-on-primary: #fff;
+  --mat-sys-primary-container: #CFE6EC;
+  --mat-sys-on-primary-container: #00232C;
+  --mat-sys-surface-tint: #0F4C5C;
+  --mat-sys-secondary-container: #DCEBEF;
+  --mat-sys-on-secondary-container: #0F4C5C;
+  --mat-dialog-container-max-width: min(680px, calc(100vw - 32px));
+}
+
+body {
+  color-scheme: light;
+  background-color: var(--nido-fondo);
+  color: #1c2b33;
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+  height: 100%;
+}
+
+h1, h2, h3 { font-family: Poppins, sans-serif; }
+
+// ---------- Utilidades de pagina (las usan todas las pantallas) ----------
+.pagina { padding: 24px; max-width: 1320px; margin: 0 auto; }
+
+.encabezado {
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; margin-bottom: 20px;
+  h1 { margin: 0; font-size: 26px; font-weight: 600; }
+  p { margin: 4px 0 0; color: var(--nido-gris); }
+}
+
+.herramientas {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 8px;
+  mat-form-field { width: 200px; max-width: 100%; }
+  .crecer { flex: 1; min-width: 200px; }
+}
+
+.tarjeta {
+  background: #fff; border: 1px solid var(--nido-borde); border-radius: 12px; padding: 18px 20px;
+  h2 { margin: 0 0 12px; font-size: 16px; font-weight: 600; }
+}
+
+.tarjeta-tabla {
+  background: #fff; border: 1px solid var(--nido-borde); border-radius: 12px; overflow: auto;
+  table { width: 100%; }
+  .acciones { white-space: nowrap; text-align: right; }
+}
+
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-bottom: 16px; }
+.kpi {
+  background: #fff; border: 1px solid var(--nido-borde); border-radius: 12px; padding: 16px 20px;
+  display: flex; flex-direction: column; gap: 2px;
+  .etiqueta { color: var(--nido-gris); font-size: 13px; }
+  .valor { font: 600 28px Poppins, sans-serif; color: var(--nido-petroleo); }
+  .detalle { color: var(--nido-gris); font-size: 12.5px; }
+}
+
+.rejilla-graficos { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr)); gap: 16px; }
+
+.vacio { text-align: center; padding: 40px 16px; color: var(--nido-gris); }
+
+.cargando { display: flex; justify-content: center; padding: 48px; }
+
+// Formularios dentro de dialogos
+.form-dialogo {
+  display: flex; flex-direction: column; min-width: min(600px, calc(100vw - 112px)); padding-top: 8px;
+  .mat-mdc-form-field { margin-bottom: 6px; }
+}
+.fila-form { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+.fila-form .ancho { grid-column: 1 / -1; }
+@media (max-width: 600px) { .fila-form { grid-template-columns: 1fr; } .pagina { padding: 16px; } }
+
+// Etiquetas de estado
+.chip-estado {
+  display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: .02em;
+  &.bueno { background: #DFF3E3; color: #1D6B3D; }
+  &.atencion { background: #FFF1CC; color: #8A5A00; }
+  &.malo { background: #FBE3DF; color: #9B2C20; }
+  &.neutro { background: #E7ECEE; color: #44545C; }
+}
+
+.mensaje-ayuda { color: var(--nido-gris); font-size: 13px; }
+
+// Mensajes (snackbar)
+.toast-exito .mdc-snackbar__surface { background: #1D6B3D !important; }
+.toast-error .mdc-snackbar__surface { background: #9B2C20 !important; }
+.toast-exito, .toast-error { --mat-snack-bar-button-color: #fff; --mat-snack-bar-supporting-text-color: #fff; }
+
+// Al imprimir un reporte solo se muestra el contenido (sin menu ni barra superior)
+@media print {
+  .menu, .barra, .no-imprimir { display: none !important; }
+  .mat-drawer-content { margin-left: 0 !important; }
+  body { background: #fff; }
+}

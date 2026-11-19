@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Servicio #{{ servicio.idServicio }} · {{ servicio.tipo }}</h2>
+<mat-dialog-content>
+  <dl class="datos">
+    <div><dt>Alojamiento</dt><dd>{{ servicio.alojamiento.nombre }}</dd></div>
+    <div><dt>Personal</dt><dd>{{ servicio.personal.nombres }} {{ servicio.personal.apellidos }}</dd></div>
+    <div><dt>Inicio</dt><dd>{{ servicio.inicio | date: 'dd/MM/yyyy HH:mm' }}</dd></div>
+    <div><dt>Fin</dt><dd>{{ servicio.fin ? (servicio.fin | date: 'dd/MM/yyyy HH:mm') : '—' }}</dd></div>
+    <div><dt>Estado</dt><dd><app-estado [valor]="servicio.estado" /></dd></div>
+  </dl>
+
+  <h3>Checklist ({{ progreso.hechos }}/{{ progreso.total }})</h3>
+  @if (items.length) {
+    <mat-progress-bar mode="determinate" [value]="progreso.porcentaje" />
+    <ul class="checklist">
+      @for (item of items; track item.item) {
+        <li [class.hecho]="item.hecho">
+          <mat-icon>{{ item.hecho ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+          <span>{{ item.item }}</span>
+          @if (item.obligatorio) { <small>Obligatorio</small> }
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="mensaje-ayuda">Este servicio no tiene checklist.</p>
+  }
+
+  <h3>Fotos de evidencia</h3>
+  <app-galeria-evidencias [idServicio]="servicio.idServicio!" />
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

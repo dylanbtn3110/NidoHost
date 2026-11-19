@@ -1,0 +1,1 @@
+import{Tr as g,Vt as Ca,ui as x}from"./main-LFFLPQ66.js";var r=class e{http=g(Ca);ubigeos(){return this.http.get(`/api/v1/ubigeos`)}paises(){return this.http.get(`/api/v1/paises`)}roles(){return this.http.get(`/api/v1/roles`)}static ɵfac=function(s){return new(s||e)};static ɵprov=x({token:e,factory:e.ɵfac,providedIn:`root`})};export{r as t};

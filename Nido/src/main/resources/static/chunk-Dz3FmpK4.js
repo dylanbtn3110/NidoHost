@@ -1,0 +1,1 @@
+import{t as s}from"./chunk-Di3a-xKT.js";import{ui as x}from"./main-LFFLPQ66.js";var o=class e extends s{constructor(){super(`/api/v1/huespedes`)}static ɵfac=function(a){return new(a||e)};static ɵprov=x({token:e,factory:e.ɵfac,providedIn:`root`})};export{o as t};

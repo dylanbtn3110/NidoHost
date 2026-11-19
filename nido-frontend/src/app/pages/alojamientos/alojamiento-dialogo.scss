@@ -1,0 +1,10 @@
+.ubicacion { margin-top: 4px; }
+.ubicacion-titulo { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.ubicacion p { margin: 6px 0 12px; }
+.mapa { z-index: 0; height: 220px; margin-top: 12px; border-radius: 8px; border: 1px solid var(--nido-borde); }
+
+// Marcador propio (circulo petroleo): evita depender de las imagenes por defecto de Leaflet.
+:host ::ng-deep .marcador-nido {
+  background: var(--nido-petroleo); border: 3px solid #fff; border-radius: 50%; box-shadow: 0 1px 6px rgba(0, 0, 0, .45); cursor: grab;
+}
+mat-form-field { margin-bottom: 8px; }

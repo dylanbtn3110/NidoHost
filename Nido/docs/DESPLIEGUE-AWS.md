@@ -65,6 +65,9 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON bd_nido.* TO 'nido_app'@'%';
 
 ## 5. Generar y subir el jar
 
+Si cambió el frontend, primero empaquételo dentro del backend (en la carpeta `nido-frontend`: `npm install` la primera vez y luego
+`npm run empaquetar`). Así el mismo jar sirve la API y la aplicación Angular.
+
 En su PC, dentro de la carpeta `Nido`:
 
 ```bash

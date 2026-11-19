@@ -1,0 +1,107 @@
+<div class="pagina">
+  <div class="encabezado">
+    <div>
+      <h1>Mis tareas</h1>
+      <p>Servicios que le asignaron. Acepte, complete el checklist y suba las fotos.</p>
+    </div>
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando"><mat-spinner diameter="40" /></div>
+  } @else {
+    @if (lista().length === 0) {
+      <div class="tarjeta vacio">Aún no tiene servicios asignados.</div>
+    }
+
+    @if (porAtender().length) {
+      <h2 class="seccion">Por atender ({{ porAtender().length }})</h2>
+    }
+    @for (s of porAtender(); track s.idServicio) {
+      <ng-container *ngTemplateOutlet="tarjeta; context: { $implicit: s }" />
+    }
+
+    @if (historial().length) {
+      <h2 class="seccion">Historial ({{ historial().length }})</h2>
+    }
+    @for (s of historial(); track s.idServicio) {
+      <ng-container *ngTemplateOutlet="tarjeta; context: { $implicit: s }" />
+    }
+  }
+</div>
+
+<ng-template #tarjeta let-s>
+  <article class="tarea tarjeta" [class.cerrada]="s.estado === 'COMPLETADO' || s.estado === 'CANCELADO' || s.estado === 'RECHAZADO'">
+    <header>
+      <span class="tipo">{{ s.tipo }}</span>
+      <app-estado [valor]="s.estado" />
+    </header>
+    <h3>{{ s.alojamiento.nombre }}</h3>
+    <p class="dato"><mat-icon>place</mat-icon> {{ s.alojamiento.direccion }}</p>
+    <p class="dato">
+      <mat-icon>schedule</mat-icon>
+      {{ s.inicio | date: 'dd/MM/yyyy HH:mm' }}@if (s.fin) { – {{ s.fin | date: 'HH:mm' }} }
+    </p>
+
+    @switch (s.estado) {
+      @case ('ASIGNADO') {
+        <div class="acciones-tarea">
+          <button mat-flat-button [disabled]="ocupado() === s.idServicio" (click)="cambiarEstado(s, 'ACEPTADO')">
+            <mat-icon>check</mat-icon> Aceptar
+          </button>
+          <button mat-stroked-button [disabled]="ocupado() === s.idServicio" (click)="cambiarEstado(s, 'RECHAZADO')">
+            <mat-icon>close</mat-icon> Rechazar
+          </button>
+        </div>
+      }
+      @case ('ACEPTADO') {
+        <div class="acciones-tarea">
+          <button mat-flat-button [disabled]="ocupado() === s.idServicio" (click)="cambiarEstado(s, 'EN_PROCESO')">
+            <mat-icon>play_arrow</mat-icon> Iniciar
+          </button>
+        </div>
+      }
+      @case ('PENDIENTE') {
+        <p class="mensaje-ayuda">Esperando que el propietario confirme la asignación.</p>
+      }
+      @case ('EN_PROCESO') {
+        @let p = progreso(s);
+        <section>
+          <h4>Checklist <span>{{ p.hechos }}/{{ p.total }}</span></h4>
+          <mat-progress-bar mode="determinate" [value]="p.porcentaje" />
+          @for (item of items(s); track item.item) {
+            <div class="item">
+              <mat-checkbox [checked]="item.hecho" (change)="marcar(s, item, $event.checked)">{{ item.item }}</mat-checkbox>
+              @if (item.obligatorio) { <small>Obligatorio</small> }
+            </div>
+          } @empty {
+            <p class="mensaje-ayuda">Este servicio no tiene checklist.</p>
+          }
+        </section>
+
+        <section>
+          <h4>Fotos de evidencia</h4>
+          <app-galeria-evidencias [idServicio]="s.idServicio" [version]="fotosSubidas()[s.idServicio] ?? 0" />
+          <input #archivo type="file" accept="image/*" capture="environment" hidden (change)="subirFoto(s, $event)" />
+          <button mat-stroked-button class="grande" [disabled]="ocupado() === s.idServicio" (click)="archivo.click()">
+            <mat-icon>photo_camera</mat-icon> Tomar o subir foto
+          </button>
+        </section>
+
+        <p class="recordatorio">
+          <mat-icon>info</mat-icon> Para completar: marcar los ítems obligatorios y subir al menos una foto.
+        </p>
+        <div class="acciones-tarea">
+          <button mat-flat-button class="grande" [disabled]="ocupado() === s.idServicio" (click)="cambiarEstado(s, 'COMPLETADO')">
+            <mat-icon>task_alt</mat-icon> Completar servicio
+          </button>
+          <button mat-button (click)="reportarIncidencia()"><mat-icon>report_problem</mat-icon> Reportar incidencia</button>
+        </div>
+      }
+      @default {
+        <div class="acciones-tarea">
+          <button mat-button (click)="reportarIncidencia()"><mat-icon>report_problem</mat-icon> Reportar incidencia</button>
+        </div>
+      }
+    }
+  </article>
+</ng-template>

@@ -1,0 +1,59 @@
+<div class="pagina">
+  <div class="encabezado">
+    <div>
+      <h1>Huéspedes</h1>
+      <p>Personas que reservan sus alojamientos.</p>
+    </div>
+    <button mat-flat-button (click)="abrir()"><mat-icon>add</mat-icon> Nuevo huésped</button>
+  </div>
+
+  <div class="herramientas">
+    <mat-form-field appearance="outline" class="crecer" subscriptSizing="dynamic">
+      <mat-label>Buscar por nombre, correo o teléfono</mat-label>
+      <input matInput [value]="texto()" (input)="texto.set($any($event.target).value)" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  @if (cargando()) { <mat-progress-bar mode="indeterminate" /> }
+
+  <div class="tarjeta-tabla">
+    <table mat-table [dataSource]="filtrados()">
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef>Nombre completo</th>
+        <td mat-cell *matCellDef="let h"><strong>{{ h.nombres }} {{ h.apellidos }}</strong></td>
+      </ng-container>
+      <ng-container matColumnDef="correo">
+        <th mat-header-cell *matHeaderCellDef>Correo</th>
+        <td mat-cell *matCellDef="let h">{{ h.correo || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="telefono">
+        <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+        <td mat-cell *matCellDef="let h">{{ h.telefono || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="consentimiento">
+        <th mat-header-cell *matHeaderCellDef>Consentimiento</th>
+        <td mat-cell *matCellDef="let h">
+          @if (h.consentimiento) {
+            <mat-icon class="si" matTooltip="Autoriza el uso de sus datos">check_circle</mat-icon>
+          } @else {
+            <mat-icon class="no" matTooltip="No autoriza el uso de sus datos">cancel</mat-icon>
+          }
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let h" class="acciones">
+          <button mat-icon-button matTooltip="Editar" aria-label="Editar" (click)="abrir(h)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button matTooltip="Eliminar" aria-label="Eliminar" (click)="eliminar(h)"><mat-icon>delete</mat-icon></button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+      <tr mat-row *matRowDef="let fila; columns: columnas"></tr>
+    </table>
+    @if (!cargando() && filtrados().length === 0) {
+      <div class="vacio">No se encontraron huéspedes.</div>
+    }
+  </div>
+</div>

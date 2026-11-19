@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>{{ editando ? 'Editar usuario' : 'Nuevo usuario' }}</h2>
+<form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+  <mat-dialog-content>
+    <div class="form-dialogo">
+      <div class="fila-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombres</mat-label>
+          <input matInput formControlName="nombres" />
+          <mat-error>Ingrese los nombres</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Apellidos</mat-label>
+          <input matInput formControlName="apellidos" />
+          <mat-error>Ingrese los apellidos</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>DNI</mat-label>
+          <input matInput formControlName="dni" inputmode="numeric" maxlength="8" />
+          <mat-error>El DNI debe tener 8 dígitos</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Correo</mat-label>
+          <input matInput type="email" formControlName="correo" />
+          <mat-error>El correo no tiene un formato válido</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Usuario (login)</mat-label>
+          <input matInput formControlName="login" maxlength="15" autocomplete="off" />
+          <mat-error>Ingrese un usuario de hasta 15 caracteres</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput formControlName="password" [type]="verClave() ? 'text' : 'password'" autocomplete="new-password" />
+          <button mat-icon-button matSuffix type="button" (click)="verClave.set(!verClave())" aria-label="Mostrar u ocultar contraseña">
+            <mat-icon>{{ verClave() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (editando) { <mat-hint>Déjela vacía para no cambiarla</mat-hint> }
+          <mat-error>
+            @if (form.controls.password.hasError('required')) { Ingrese una contraseña } @else { Mínimo 8 caracteres }
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="ancho">
+          <mat-label>Roles</mat-label>
+          <mat-select formControlName="roles" multiple>
+            @for (r of roles(); track r.idrol) { <mat-option [value]="r.idrol">{{ r.nombre }}</mat-option> }
+          </mat-select>
+          <mat-error>Seleccione al menos un rol</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" mat-dialog-close>Cancelar</button>
+    <button mat-flat-button type="submit" [disabled]="guardando()">Guardar</button>
+  </mat-dialog-actions>
+</form>

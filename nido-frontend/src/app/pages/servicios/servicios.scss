@@ -1,0 +1,8 @@
+.progreso {
+  display: flex; align-items: center; gap: 8px; min-width: 70px;
+  span { font-size: 13px; min-width: 28px; }
+  mat-progress-bar { flex: 1; height: 4px; border-radius: 2px; }
+}
+td, th { padding: 0 10px; }
+.mat-column-personal, .mat-column-inicio, .mat-column-fin { white-space: nowrap; }
+.mat-column-alojamiento { min-width: 150px; }

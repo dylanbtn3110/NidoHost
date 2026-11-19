@@ -1,0 +1,62 @@
+<h2 mat-dialog-title>Nuevo servicio</h2>
+<form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+  <mat-dialog-content>
+    <div class="form-dialogo">
+      <div class="fila-form">
+        <mat-form-field>
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="tipo">
+            @for (t of tipos; track t) { <mat-option [value]="t">{{ t }}</mat-option> }
+          </mat-select>
+          <mat-error>Elija el tipo de servicio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Alojamiento</mat-label>
+          <mat-select formControlName="idAlojamiento">
+            @for (a of alojamientos(); track a.idAlojamiento) { <mat-option [value]="a.idAlojamiento">{{ a.nombre }}</mat-option> }
+          </mat-select>
+          <mat-error>Elija el alojamiento</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="ancho">
+          <mat-label>Reserva (opcional)</mat-label>
+          <mat-select formControlName="idReserva">
+            <mat-option [value]="0">Sin reserva</mat-option>
+            @for (r of reservasDelAlojamiento(); track r.idReserva) {
+              <mat-option [value]="r.idReserva">#{{ r.idReserva }} · {{ r.huesped.nombres }} {{ r.huesped.apellidos }} · {{ r.entrada.substring(0, 10) }} a {{ r.salida.substring(0, 10) }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="ancho">
+          <mat-label>Personal asignado</mat-label>
+          <mat-select formControlName="idPersonal">
+            @for (p of personal(); track p.idusuario) {
+              <mat-option [value]="p.idusuario">{{ p.nombres }} {{ p.apellidos }}{{ p.especialidad ? ' · ' + p.especialidad : '' }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Elija a quién se asigna</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Inicio</mat-label>
+          <input matInput type="datetime-local" formControlName="inicio" />
+          <mat-error>Indique cuándo empieza</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Fin (opcional)</mat-label>
+          <input matInput type="datetime-local" formControlName="fin" />
+        </mat-form-field>
+      </div>
+      @if (form.errors?.['finAntesDeInicio'] && form.controls.fin.touched) {
+        <p class="mensaje-ayuda" style="color: #9B2C20">El fin debe ser posterior al inicio.</p>
+      }
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" mat-dialog-close>Cancelar</button>
+    <button mat-flat-button type="submit" [disabled]="guardando()">Guardar</button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,14 @@
+.nombre { font-weight: 600; color: var(--nido-petroleo); margin: 0 0 4px; }
+.datos {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px 16px; margin: 14px 0 4px;
+  dt { color: var(--nido-gris); font-size: 12.5px; }
+  dd { margin: 2px 0 0; font-weight: 600; font-size: 16px; }
+}
+h3 { margin: 16px 0 8px; font-size: 14px; }
+.precision {
+  display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; margin-bottom: 10px; font-size: 13.5px;
+  mat-progress-bar { grid-column: 1 / -1; height: 6px; border-radius: 3px; }
+}
+.lista { display: flex; flex-wrap: wrap; gap: 6px; }
+.etiqueta { background: #E7ECEE; color: #44545C; border-radius: 999px; padding: 2px 10px; font-size: 12.5px; }
+mat-dialog-actions { flex-wrap: wrap; }

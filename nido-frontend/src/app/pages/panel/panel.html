@@ -1,0 +1,51 @@
+<div class="pagina">
+  <header class="encabezado">
+    <div>
+      <h1>Hola, {{ nombre() }}</h1>
+      <p>Resumen de los últimos 90 días: del {{ inicio | date: 'dd/MM/yyyy' }} al {{ fin | date: 'dd/MM/yyyy' }}.</p>
+    </div>
+  </header>
+
+  @if (cargando()) {
+    <div class="cargando"><mat-spinner diameter="40" /></div>
+  } @else if (datos(); as d) {
+    <section class="kpis">
+      <div class="kpi">
+        <span class="etiqueta">Ingresos</span>
+        <span class="valor">{{ d.ingresos.totalIngresos | currency: 'PEN' : 'symbol-narrow' : '1.2-2' }}</span>
+        <span class="detalle">Gastos {{ d.ingresos.totalGastos | currency: 'PEN' : 'symbol-narrow' : '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="etiqueta">Ocupación promedio</span>
+        <span class="valor">{{ d.ocupacion.ocupacionPromedio | number: '1.0-1' }} %</span>
+        <span class="detalle">De {{ d.ocupacion.nochesDelPeriodo }} noches del periodo</span>
+      </div>
+      <div class="kpi">
+        <span class="etiqueta">Servicios del periodo</span>
+        <span class="valor">{{ serviciosDelPeriodo() }}</span>
+        <span class="detalle">{{ d.operacion.atrasos.cantidad }} con atraso</span>
+      </div>
+      <div class="kpi">
+        <span class="etiqueta">Incidencias abiertas</span>
+        <span class="valor">{{ d.abiertas.length }}</span>
+        <span class="detalle">Pendientes de atención</span>
+      </div>
+    </section>
+
+    @if (hayDatos()) {
+      <section class="rejilla-graficos">
+        <app-grafico-ingresos [reporte]="d.ingresos" />
+        <app-grafico-ocupacion [reporte]="d.ocupacion" />
+        <app-grafico-servicios [porEstado]="d.operacion.serviciosPorEstado" />
+        <app-grafico-incidencias [porPrioridad]="d.operacion.incidenciasPorPrioridad" />
+      </section>
+    } @else {
+      <div class="tarjeta vacio">
+        <mat-icon>insights</mat-icon>
+        <p>No hay movimiento en los últimos 90 días.</p>
+      </div>
+    }
+  } @else {
+    <div class="vacio">No se pudo cargar el resumen. Intente de nuevo más tarde.</div>
+  }
+</div>

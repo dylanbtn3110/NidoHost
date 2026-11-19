@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>{{ reserva ? 'Editar reserva #' + reserva.idReserva : 'Nueva reserva' }}</h2>
+<mat-dialog-content>
+  <form class="form-dialogo" [formGroup]="form" id="form-reserva" (ngSubmit)="guardar()">
+    <div class="fila-form">
+      <mat-form-field>
+        <mat-label>Alojamiento</mat-label>
+        <mat-select formControlName="idAlojamiento">
+          @for (a of alojamientos(); track a.idAlojamiento) {
+            <mat-option [value]="a.idAlojamiento">{{ a.nombre }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.idAlojamiento.invalid) { <mat-error>Elija un alojamiento</mat-error> }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Huésped</mat-label>
+        <mat-select formControlName="idHuesped">
+          @for (h of huespedes(); track h.idHuesped) {
+            <mat-option [value]="h.idHuesped">{{ h.nombres }} {{ h.apellidos }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.idHuesped.invalid) { <mat-error>Elija un huésped</mat-error> }
+      </mat-form-field>
+    </div>
+
+    <div class="fila-form">
+      <mat-form-field>
+        <mat-label>Entrada</mat-label>
+        <input matInput type="datetime-local" formControlName="entrada" />
+        @if (form.controls.entrada.invalid) { <mat-error>La entrada es obligatoria</mat-error> }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Salida</mat-label>
+        <input matInput type="datetime-local" formControlName="salida" />
+        @if (form.controls.salida.invalid) { <mat-error>La salida es obligatoria</mat-error> }
+      </mat-form-field>
+    </div>
+
+    <!-- US07: aviso de disponibilidad en vivo -->
+    @if (fechasInvertidas()) {
+      <div class="aviso malo"><mat-icon>error</mat-icon> La salida debe ser posterior a la entrada.</div>
+    } @else if (conflicto(); as c) {
+      <div class="aviso malo">
+        <mat-icon>event_busy</mat-icon>
+        <span>Fechas no disponibles: ya existe la reserva #{{ c.idReserva }} del {{ c.entrada | date: 'dd/MM/yyyy HH:mm' }} al {{ c.salida | date: 'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+    } @else if (disponibilidad()) {
+      <div class="aviso bueno"><mat-icon>event_available</mat-icon> Fechas disponibles · {{ noches() }} {{ noches() === 1 ? 'noche' : 'noches' }}</div>
+    }
+
+    <div class="fila-form">
+      <mat-form-field>
+        <mat-label>Canal</mat-label>
+        <mat-select formControlName="canal">
+          @for (c of canales; track c) { <mat-option [value]="c">{{ c }}</mat-option> }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado">
+          @for (e of estados; track e) { <mat-option [value]="e">{{ e }}</mat-option> }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Precio (opcional)</mat-label>
+        <input matInput type="number" min="0" step="0.01" formControlName="precio" />
+        @if (form.controls.precio.invalid) { <mat-error>El precio no puede ser negativo</mat-error> }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Moneda</mat-label>
+        <input matInput maxlength="3" formControlName="moneda" />
+        @if (form.controls.moneda.invalid) { <mat-error>Indique la moneda (ej. PEN)</mat-error> }
+      </mat-form-field>
+      <p class="mensaje-ayuda ancho">Si deja el precio vacío se calcula noches × precio base.</p>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-flat-button type="submit" form="form-reserva" [disabled]="guardando() || !!conflicto() || fechasInvertidas()">Guardar</button>
+</mat-dialog-actions>

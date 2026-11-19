@@ -13,6 +13,9 @@ Backend en Spring Boot 4 (Java 25) + MySQL 8, con seguridad JWT por roles.
 3. **Arrancar**: desde Eclipse/STS (Run As > Spring Boot App) o con `./mvnw spring-boot:run`.
 4. **Probar**: Swagger en <http://localhost:8080/swagger-ui.html>, o importe en Postman
    `pruebas-api/Nido.postman_collection.json` y ejecute la colección completa con *Runner*.
+5. **Aplicación web (Angular)**: el backend sirve el frontend ya compilado en <http://localhost:8080/>. Para modificarlo, use el
+   proyecto `../nido-frontend` (ver su README): `npm start` abre <http://localhost:4200> y `npm run empaquetar` copia el build a
+   `src/main/resources/static`.
 
 ## Usuarios de prueba (contraseña `Nido2026!`)
 

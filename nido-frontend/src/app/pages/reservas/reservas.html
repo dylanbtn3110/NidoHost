@@ -1,0 +1,99 @@
+<div class="pagina">
+  <div class="encabezado">
+    <div>
+      <h1>Reservas</h1>
+      <p>Estadias de los huéspedes en sus alojamientos</p>
+    </div>
+    <div class="botones">
+      <a mat-stroked-button routerLink="/calendario"><mat-icon>calendar_month</mat-icon> Ver calendario</a>
+      <button mat-flat-button (click)="abrir()"><mat-icon>add</mat-icon> Nueva reserva</button>
+    </div>
+  </div>
+
+  <div class="herramientas">
+    <mat-form-field class="crecer" subscriptSizing="dynamic">
+      <mat-label>Buscar huésped o alojamiento</mat-label>
+      <input matInput [ngModel]="texto()" (ngModelChange)="texto.set($event)" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Alojamiento</mat-label>
+      <mat-select [ngModel]="filtroAlojamiento()" (ngModelChange)="filtroAlojamiento.set($event)">
+        <mat-option [value]="0">Todos</mat-option>
+        @for (a of alojamientos(); track a.idAlojamiento) {
+          <mat-option [value]="a.idAlojamiento">{{ a.nombre }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Estado</mat-label>
+      <mat-select [ngModel]="filtroEstado()" (ngModelChange)="filtroEstado.set($event)">
+        <mat-option value="">Todos</mat-option>
+        @for (e of estados; track e) {
+          <mat-option [value]="e">{{ e }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando"><mat-spinner diameter="36" /></div>
+  } @else {
+    <div class="tarjeta-tabla">
+      <table mat-table [dataSource]="lista()">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let r">{{ r.idReserva }}</td>
+        </ng-container>
+        <ng-container matColumnDef="alojamiento">
+          <th mat-header-cell *matHeaderCellDef>Alojamiento</th>
+          <td mat-cell *matCellDef="let r">{{ r.alojamiento.nombre }}</td>
+        </ng-container>
+        <ng-container matColumnDef="huesped">
+          <th mat-header-cell *matHeaderCellDef>Huésped</th>
+          <td mat-cell *matCellDef="let r">{{ nombreHuesped(r) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="entrada">
+          <th mat-header-cell *matHeaderCellDef>Entrada</th>
+          <td mat-cell *matCellDef="let r" class="fecha">{{ r.entrada | date: 'dd/MM/yyyy HH:mm' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="salida">
+          <th mat-header-cell *matHeaderCellDef>Salida</th>
+          <td mat-cell *matCellDef="let r" class="fecha">{{ r.salida | date: 'dd/MM/yyyy HH:mm' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="noches">
+          <th mat-header-cell *matHeaderCellDef>Noches</th>
+          <td mat-cell *matCellDef="let r">{{ noches(r) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="canal">
+          <th mat-header-cell *matHeaderCellDef>Canal</th>
+          <td mat-cell *matCellDef="let r">{{ r.canal }}</td>
+        </ng-container>
+        <ng-container matColumnDef="precio">
+          <th mat-header-cell *matHeaderCellDef>Precio</th>
+          <td mat-cell *matCellDef="let r">{{ r.precio | currency: 'PEN' : 'symbol-narrow' : '1.2-2' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let r"><app-estado [valor]="r.estado" /></td>
+        </ng-container>
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let r" class="acciones">
+            <button mat-icon-button matTooltip="Editar" aria-label="Editar" (click)="abrir(r)"><mat-icon>edit</mat-icon></button>
+            @if (r.estado !== 'CANCELADA') {
+              <button mat-icon-button matTooltip="Cancelar reserva" aria-label="Cancelar reserva" (click)="cancelar(r)"><mat-icon>cancel</mat-icon></button>
+            }
+            <button mat-icon-button matTooltip="Eliminar" aria-label="Eliminar" (click)="eliminar(r)"><mat-icon>delete</mat-icon></button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let fila; columns: columnas"></tr>
+      </table>
+      @if (lista().length === 0) {
+        <div class="vacio">No hay reservas que coincidan con los filtros.</div>
+      }
+    </div>
+  }
+</div>

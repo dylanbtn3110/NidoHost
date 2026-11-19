@@ -1,0 +1,1 @@
+import{Tr as g,Vt as Ca}from"./main-LFFLPQ66.js";var s=class{constructor(t){this.url=t}url;http=g(Ca);listar(){return this.http.get(this.url)}obtener(t){return this.http.get(`${this.url}/${t}`)}crear(t){return this.http.post(this.url,t)}actualizar(t,i){return this.http.put(`${this.url}/${t}`,i)}eliminar(t){return this.http.delete(`${this.url}/${t}`)}};export{s as t};

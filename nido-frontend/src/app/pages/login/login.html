@@ -1,0 +1,49 @@
+<div class="login">
+  <section class="hero">
+    <div class="marca"><img src="logo-isotipo-claro.svg" alt="" width="40" height="40" /> Nido</div>
+    <h1>Tu operación de alojamientos, en un solo lugar.</h1>
+    <p>Reservas, servicios, evidencias, incidencias e ingresos conectados para que nada se pierda.</p>
+    <ul>
+      <li><mat-icon>check_circle</mat-icon> Sin dobles reservas</li>
+      <li><mat-icon>check_circle</mat-icon> Checklist y fotos de cada servicio</li>
+      <li><mat-icon>check_circle</mat-icon> Incidencias con ayuda de inteligencia artificial</li>
+    </ul>
+  </section>
+
+  <section class="formulario">
+    <form [formGroup]="form" (ngSubmit)="ingresar()" novalidate>
+      <h2>Iniciar sesión</h2>
+      <p class="sub">Ingrese con su usuario para ver las opciones de su rol.</p>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="login" autocomplete="username" />
+        @if (form.controls.login.touched && form.controls.login.invalid) { <mat-error>Ingrese su usuario</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" [type]="verClave() ? 'text' : 'password'" autocomplete="current-password" />
+        <button mat-icon-button matSuffix type="button" (click)="verClave.set(!verClave())" aria-label="Mostrar contraseña">
+          <mat-icon>{{ verClave() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.controls.password.touched && form.controls.password.invalid) { <mat-error>Ingrese su contraseña</mat-error> }
+      </mat-form-field>
+
+      @if (error()) { <div class="error" role="alert">{{ error() }}</div> }
+
+      <button mat-flat-button type="submit" class="ingresar" [disabled]="cargando()">
+        @if (cargando()) { <mat-spinner diameter="20" /> } @else { Ingresar }
+      </button>
+
+      <div class="demo">
+        <small>Usuarios de prueba (contraseña Nido2026!):</small>
+        <div>
+          @for (u of demo; track u.login) {
+            <button type="button" mat-stroked-button (click)="usarDemo(u.login)">{{ u.login }} · {{ u.rol }}</button>
+          }
+        </div>
+      </div>
+    </form>
+  </section>
+</div>

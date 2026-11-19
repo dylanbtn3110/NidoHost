@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>{{ huesped ? 'Editar huésped' : 'Nuevo huésped' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-dialogo" (ngSubmit)="guardar()" novalidate>
+    <div class="fila-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombres</mat-label>
+        <input matInput formControlName="nombres" />
+        @if (form.controls.nombres.invalid) { <mat-error>Ingrese los nombres</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Apellidos</mat-label>
+        <input matInput formControlName="apellidos" />
+        @if (form.controls.apellidos.invalid) { <mat-error>Ingrese los apellidos</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Correo</mat-label>
+        <input matInput type="email" formControlName="correo" />
+        @if (form.controls.correo.invalid) { <mat-error>Ingrese un correo válido</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono" />
+      </mat-form-field>
+    </div>
+    <mat-checkbox formControlName="consentimiento">El huésped autoriza el uso de sus datos</mat-checkbox>
+    @if (form.controls.consentimiento.touched && form.controls.consentimiento.invalid) {
+      <p class="error" role="alert">El consentimiento es obligatorio para registrar al huésped.</p>
+    }
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-flat-button (click)="guardar()" [disabled]="guardando()">Guardar</button>
+</mat-dialog-actions>

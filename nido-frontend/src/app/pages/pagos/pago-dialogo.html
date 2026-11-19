@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>{{ pago ? 'Editar pago #' + pago.idPago : 'Nuevo pago' }}</h2>
+<mat-dialog-content>
+  <form class="form-dialogo" [formGroup]="form" id="form-pago" (ngSubmit)="guardar()">
+    <mat-form-field>
+      <mat-label>Reserva</mat-label>
+      <mat-select formControlName="idReserva">
+        @for (r of reservas(); track r.idReserva) {
+          <mat-option [value]="r.idReserva">#{{ r.idReserva }} · {{ r.alojamiento.nombre }} · {{ r.huesped.nombres }} {{ r.huesped.apellidos }}</mat-option>
+        }
+      </mat-select>
+      @if (form.controls.idReserva.invalid) { <mat-error>Elija una reserva</mat-error> }
+    </mat-form-field>
+
+    <div class="fila-form">
+      <mat-form-field>
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="tipo">
+          @for (t of tipos; track t) { <mat-option [value]="t">{{ t }}</mat-option> }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado">
+          @for (e of estados; track e) { <mat-option [value]="e">{{ e }}</mat-option> }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Importe</mat-label>
+        <input matInput type="number" min="0" step="0.01" formControlName="importe" />
+        @if (form.controls.importe.invalid) { <mat-error>El importe debe ser mayor que 0</mat-error> }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Moneda</mat-label>
+        <input matInput maxlength="3" formControlName="moneda" />
+        @if (form.controls.moneda.invalid) { <mat-error>Indique la moneda (ej. PEN)</mat-error> }
+      </mat-form-field>
+      <mat-form-field class="ancho">
+        <mat-label>Fecha</mat-label>
+        <input matInput type="datetime-local" formControlName="fecha" />
+        @if (form.controls.fecha.invalid) { <mat-error>La fecha es obligatoria</mat-error> }
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-flat-button type="submit" form="form-pago" [disabled]="guardando()">Guardar</button>
+</mat-dialog-actions>
