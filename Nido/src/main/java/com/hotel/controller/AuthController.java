@@ -7,6 +7,11 @@ import com.hotel.exception.ReglaNegocioException;
 import com.hotel.repository.UsuarioRepository;
 import com.hotel.security.JwtService;
 import com.hotel.security.UsuarioActual;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 /** Inicio de sesion (US01). */
+@Tag(name = "US01 · Autenticación",
+        description = "Inicio de sesión con JWT y perfil del usuario autenticado. Login: público. Perfil: "
+                + "cualquier usuario autenticado.")
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -38,6 +46,17 @@ public class AuthController {
         this.usuarioActual = usuarioActual;
     }
 
+    @Operation(summary = "Iniciar sesión",
+            description = "Devuelve un token JWT y las opciones de menú según los roles del usuario. Envíe el "
+                    + "token en el header Authorization: Bearer <token> (botón Authorize). Un usuario "
+                    + "INACTIVO no puede iniciar sesión. El mensaje del 401 es genérico: no revela si falló "
+                    + "el usuario o la contraseña.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sesión iniciada: token, roles y opciones de menú"),
+            @ApiResponse(responseCode = "400", description = "Falta el login o la contraseña"),
+            @ApiResponse(responseCode = "401", description = "Usuario o contraseña incorrectos, o cuenta inactiva")
+    })
+    @SecurityRequirements
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         UserDetails userDetails;
@@ -53,6 +72,9 @@ public class AuthController {
     }
 
     /** Datos del usuario autenticado y opciones de su menu. */
+    @Operation(summary = "Ver el perfil del usuario autenticado",
+            description = "Devuelve idusuario, login, nombres, roles y opciones de menú activas, según el token. "
+                    + "401 si no se envía un token válido.")
     @GetMapping("/perfil")
     public ResponseEntity<Map<String, Object>> perfil() {
         Usuario usuario = usuarioActual.usuario();

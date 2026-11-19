@@ -5,8 +5,12 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.tags.Tag;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Comparator;
 
 /** Documentacion de la API en /swagger-ui.html con boton "Authorize" para el token JWT. */
 @Configuration
@@ -23,5 +27,17 @@ public class OpenApiConfig {
                 .components(new Components().addSecuritySchemes("bearerAuth",
                         new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
+    }
+
+    /** Ordena los grupos de Swagger: primero las historias de usuario (US01, US02...) y luego el resto. */
+    @Bean
+    public OpenApiCustomizer ordenarEtiquetas() {
+        return openApi -> {
+            if (openApi.getTags() != null) {
+                openApi.getTags().sort(Comparator
+                        .comparing((Tag t) -> !t.getName().startsWith("US"))
+                        .thenComparing(Tag::getName));
+            }
+        };
     }
 }
