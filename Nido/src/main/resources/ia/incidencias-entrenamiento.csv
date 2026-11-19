@@ -1,0 +1,118 @@
+# categoria;prioridad;descripcion  (incidencias de ejemplo etiquetadas para entrenar el clasificador)
+MANTENIMIENTO;CRITICA;Olor a gas en la cocina, se cerró la llave general
+MANTENIMIENTO;CRITICA;Cortocircuito en el tablero eléctrico, saltaron chispas
+MANTENIMIENTO;CRITICA;Inundación en el baño por una tubería rota, el agua llega a la sala
+MANTENIMIENTO;CRITICA;Se cayó parte del techo del dormitorio por una filtración
+MANTENIMIENTO;CRITICA;Sale humo del enchufe de la sala
+MANTENIMIENTO;CRITICA;Fuga de gas en la terma, se siente un olor muy fuerte
+MANTENIMIENTO;CRITICA;Cable eléctrico pelado en el pasillo con riesgo de descarga
+MANTENIMIENTO;CRITICA;Se rompió una tubería y hay agua cayendo sobre los tomacorrientes
+MANTENIMIENTO;ALTA;Fuga de agua en la llave del baño principal
+MANTENIMIENTO;ALTA;No hay agua caliente en la ducha desde ayer
+MANTENIMIENTO;ALTA;La terma no enciende y el huésped llega hoy
+MANTENIMIENTO;ALTA;Se malogró el aire acondicionado y hace mucho calor
+MANTENIMIENTO;ALTA;El inodoro está atorado y no baja el agua
+MANTENIMIENTO;ALTA;Se cortó la luz en todo el departamento
+MANTENIMIENTO;ALTA;La refrigeradora no enfría y se malogró la comida
+MANTENIMIENTO;ALTA;No hay agua en el departamento desde esta mañana
+MANTENIMIENTO;ALTA;El desagüe del lavadero está rebalsando
+MANTENIMIENTO;MEDIA;El aire acondicionado de la sala hace ruido
+MANTENIMIENTO;MEDIA;La lavadora no centrifuga bien
+MANTENIMIENTO;MEDIA;El wifi está lento y se corta por momentos
+MANTENIMIENTO;MEDIA;Gotea el caño de la cocina
+MANTENIMIENTO;MEDIA;Una luz del dormitorio parpadea
+MANTENIMIENTO;MEDIA;La puerta del balcón roza y cuesta abrirla
+MANTENIMIENTO;MEDIA;La ducha tiene poca presión de agua
+MANTENIMIENTO;MEDIA;El ventilador del baño hace un ruido extraño
+MANTENIMIENTO;BAJA;Un foco del pasillo está quemado
+MANTENIMIENTO;BAJA;El cajón de la cocina se atasca
+MANTENIMIENTO;BAJA;Hay que cambiar las pilas del control del aire
+MANTENIMIENTO;BAJA;La cortina del baño se salió del riel
+MANTENIMIENTO;BAJA;Pintura descascarada en una pared del cuarto
+MANTENIMIENTO;BAJA;Bisagra floja en la puerta del closet
+MANTENIMIENTO;BAJA;El timbre suena muy bajo
+MANTENIMIENTO;BAJA;La manija del cajón se está soltando
+LIMPIEZA;CRITICA;Plaga de ratas en la cocina, hay excrementos en la despensa
+LIMPIEZA;CRITICA;Infestación de cucarachas en todo el departamento
+LIMPIEZA;CRITICA;Aguas servidas en el piso del baño con olor insoportable
+LIMPIEZA;CRITICA;Aparecieron chinches en las camas y los huéspedes tienen picaduras
+LIMPIEZA;ALTA;El departamento llegó sucio y el huésped ingresa en una hora
+LIMPIEZA;ALTA;Moho extendido en el techo del baño
+LIMPIEZA;ALTA;Cama con manchas y sin sábanas limpias para el check-in
+LIMPIEZA;ALTA;Basura acumulada del huésped anterior en la cocina
+LIMPIEZA;ALTA;Pulgas en el colchón de la habitación
+LIMPIEZA;ALTA;El baño quedó sin limpiar y el huésped llega pronto
+LIMPIEZA;MEDIA;El huésped reporta falta de toallas al ingresar
+LIMPIEZA;MEDIA;Olor a humedad en el baño principal
+LIMPIEZA;MEDIA;Polvo acumulado sobre los muebles de la sala
+LIMPIEZA;MEDIA;Las ventanas están sucias por fuera
+LIMPIEZA;MEDIA;Quedaron platos sucios en el lavadero
+LIMPIEZA;MEDIA;La alfombra tiene manchas antiguas
+LIMPIEZA;MEDIA;El huésped pide un cambio de sábanas
+LIMPIEZA;BAJA;Falta papel higiénico en el baño de visitas
+LIMPIEZA;BAJA;Falta jabón en el lavadero
+LIMPIEZA;BAJA;Hay telarañas en una esquina del techo
+LIMPIEZA;BAJA;Faltan cápsulas de café
+LIMPIEZA;BAJA;Una toalla de mano está arrugada
+LIMPIEZA;BAJA;Quedaron migas en la mesa de la terraza
+LIMPIEZA;BAJA;Falta cambiar la bolsa del tacho del baño
+DANO;CRITICA;Vidrio de la ventana roto con bordes filosos en el dormitorio
+DANO;CRITICA;Incendio pequeño en la cocina por un electrodoméstico, se apagó con el extintor
+DANO;CRITICA;El huésped rompió la puerta principal y no se puede cerrar
+DANO;CRITICA;Se desprendió el barandal del balcón y hay riesgo de caída
+DANO;ALTA;Mancha de vino en el sofá de la sala
+DANO;ALTA;La televisión quedó con la pantalla rota
+DANO;ALTA;Quemadura grande en el colchón
+DANO;ALTA;Se rompió la mesa del comedor
+DANO;ALTA;Daño en el piso de madera por agua derramada
+DANO;ALTA;El huésped rompió el lavadero de la cocina
+DANO;MEDIA;Se rompió una silla del comedor
+DANO;MEDIA;Rayones profundos en la mesa de centro
+DANO;MEDIA;La cortina de la sala está rasgada
+DANO;MEDIA;Faltan dos copas de la vajilla
+DANO;MEDIA;Se rompió el espejo del baño
+DANO;MEDIA;Una puerta de ropero quedó descolgada por el golpe
+DANO;BAJA;Vaso roto en la cocina durante la estadía
+DANO;BAJA;El control remoto del televisor no funciona
+DANO;BAJA;Pequeña marca en la pared de la sala
+DANO;BAJA;Se quebró una taza
+DANO;BAJA;Falta un cojín decorativo
+DANO;BAJA;La tapa de un táper está rota
+DANO;BAJA;Se rompió un platito pequeño del desayuno
+SEGURIDAD;CRITICA;Robo en el departamento, se llevaron la laptop del huésped
+SEGURIDAD;CRITICA;Personas desconocidas intentaron ingresar por la puerta
+SEGURIDAD;CRITICA;El detector de humo suena sin parar y sale humo del pasillo
+SEGURIDAD;CRITICA;Hombre desconocido merodeando dentro del edificio
+SEGURIDAD;CRITICA;El huésped reporta que forzaron la cerradura al volver
+SEGURIDAD;CRITICA;Se perdió la llave de la puerta principal y alguien más la tiene
+SEGURIDAD;ALTA;La cerradura de la puerta principal no cierra bien
+SEGURIDAD;ALTA;La ventana del dormitorio no cierra con seguro
+SEGURIDAD;ALTA;El extintor está vencido
+SEGURIDAD;ALTA;El detector de humo no funciona
+SEGURIDAD;ALTA;La reja del balcón está suelta
+SEGURIDAD;ALTA;El pestillo de la puerta de entrada está roto
+SEGURIDAD;MEDIA;La cámara de seguridad del pasillo no graba
+SEGURIDAD;MEDIA;El código de la caja de llaves no funciona
+SEGURIDAD;MEDIA;La luz de emergencia de la escalera está apagada
+SEGURIDAD;MEDIA;El portero eléctrico no abre la puerta del edificio
+SEGURIDAD;MEDIA;La luz del acceso principal está quemada y queda oscuro
+SEGURIDAD;BAJA;Falta cambiar el código de la caja de llaves tras el check-out
+SEGURIDAD;BAJA;El letrero de salida de emergencia está algo despegado
+SEGURIDAD;BAJA;Falta reponer el botiquín con curitas
+SEGURIDAD;BAJA;La mirilla de la puerta está empañada
+OTRO;CRITICA;Huésped con dolor fuerte en el pecho, necesita una ambulancia
+OTRO;CRITICA;Un huésped se desmayó y pide ayuda médica urgente
+OTRO;ALTA;Huésped muy molesto amenaza con cancelar la reserva y pide reembolso
+OTRO;ALTA;El huésped reclama que el alojamiento no coincide con las fotos y quiere irse
+OTRO;ALTA;Huésped llegó y no encuentra las llaves para entrar
+OTRO;MEDIA;El huésped pide cambiar de habitación por el ruido de la calle
+OTRO;MEDIA;El huésped solicita una cuna adicional para esta noche
+OTRO;MEDIA;Reclamo de un huésped por la demora en la atención
+OTRO;MEDIA;El huésped pregunta por estacionamiento y no hay disponible
+OTRO;MEDIA;El huésped pide extender su estadía un día más
+OTRO;BAJA;El huésped solicita check-out tardío a las 2 p. m.
+OTRO;BAJA;Consulta sobre recomendaciones de restaurantes cercanos
+OTRO;BAJA;El huésped pide una almohada extra
+OTRO;BAJA;Solicitud de factura a nombre de empresa
+OTRO;BAJA;El huésped pregunta por la clave del wifi
+OTRO;BAJA;Pide cambiar el horario del check-in

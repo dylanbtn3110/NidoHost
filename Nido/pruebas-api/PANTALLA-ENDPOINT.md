@@ -212,6 +212,20 @@ Cuando el profesor señale una pantalla (el prototipo de una HU), busca su secci
 | Reporte de operación (administrador) | `GET /reportes/operacion?fechaInicio=2026-10-01&fechaFin=2026-10-31` | 200 OK |
 | Periodo inválido | `GET /reportes/operacion?fechaInicio=2026-10-31&fechaFin=2026-10-01` | 400 Bad Request |
 
+## US17 Sugerencia de incidencia con IA
+
+- **Pantalla:** Incidencias → Nueva incidencia (sugerencia de categoría y prioridad)
+- **Carpeta de Postman:** «US17 Sugerencia de incidencia con IA»
+
+| Request (nombre en Postman) | Método y ruta | Resultado esperado |
+|---|---|---|
+| Sugerir categoría y prioridad (gas) | `POST /ia/incidencias/sugerencia` | 200 OK |
+| Sugerir categoría y prioridad (insumos) | `POST /ia/incidencias/sugerencia` | 200 OK |
+| Ficha del modelo de IA | `GET /ia/incidencias/modelo` | 200 OK |
+| Reentrenar con las incidencias registradas (admin) | `POST /ia/incidencias/reentrenar` | 200 OK |
+| Personal no puede reentrenar | `POST /ia/incidencias/reentrenar` | 403 Forbidden |
+| Descripción vacía | `POST /ia/incidencias/sugerencia` | 400 Bad Request |
+
 ## US22 Auditoría de acciones críticas
 
 - **Pantalla:** Auditoría (`/app/auditoria.html`)

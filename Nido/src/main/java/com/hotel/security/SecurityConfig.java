@@ -60,6 +60,9 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/servicios/*/evidencias", "/api/v1/evidencias/**").hasAnyRole(ADMIN, PROPIETARIO, PERSONAL)
                 .requestMatchers(HttpMethod.GET, "/api/v1/incidencias", "/api/v1/incidencias/*").hasAnyRole(ADMIN, PROPIETARIO, PERSONAL)
                 .requestMatchers(HttpMethod.POST, "/api/v1/incidencias").hasAnyRole(ADMIN, PROPIETARIO, PERSONAL)
+                // IA de incidencias (US17): quien reporta recibe la sugerencia; solo el ADMIN reentrena el modelo
+                .requestMatchers(HttpMethod.POST, "/api/v1/ia/incidencias/sugerencia").hasAnyRole(ADMIN, PROPIETARIO, PERSONAL)
+                .requestMatchers(HttpMethod.POST, "/api/v1/ia/incidencias/reentrenar").hasRole(ADMIN)
                 .requestMatchers("/api/v1/auth/**").authenticated()
 
                 // Catalogos: cualquier usuario autenticado consulta; solo ADMIN modifica

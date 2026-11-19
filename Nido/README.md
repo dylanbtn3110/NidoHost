@@ -50,6 +50,7 @@ header `Authorization: Bearer <token>`.
 | Personal (US09) | `GET/POST /usuarios/personal`, `PATCH /usuarios/personal/{id}/estado` | ADMIN, PROPIETARIO |
 | Usuarios y roles (US02) | CRUD `/usuarios`, `PATCH /usuarios/{id}/estado`, CRUD `/roles`, `/opciones` | ADMIN |
 | Catálogos | CRUD `/ubigeos`, `/paises`, `/catalogos`, `/datacatalogos` | consulta: autenticado; cambios: ADMIN |
+| IA de incidencias (US17) | `POST /ia/incidencias/sugerencia`, `GET /ia/incidencias/modelo`, `POST /ia/incidencias/reentrenar` | sugerir: todos; ficha: ADMIN y PROPIETARIO; reentrenar: ADMIN |
 | Auditoría (US22) | `GET /auditorias?entidad=&usuario=` | ADMIN |
 
 ## Reglas de negocio implementadas
@@ -68,6 +69,10 @@ header `Authorization: Bearer <token>`.
   El personal solo opera los servicios que tiene asignados.
 - **US11** – No se puede completar un servicio con ítems obligatorios del checklist sin marcar.
 - **US12** – No se puede completar un servicio sin al menos una foto (JPG, PNG o WEBP, máximo 5 MB).
+- **US17 (IA)** – Al registrar una incidencia, un modelo Naive Bayes propio sugiere la categoría y la prioridad a partir
+  de la descripción (con su confianza y las palabras que pesaron). Se entrena con `src/main/resources/ia/incidencias-entrenamiento.csv`
+  y con las incidencias ya registradas (`POST /ia/incidencias/reentrenar`). Validación dejando un ejemplo fuera:
+  categoría 74 %, prioridad 47 % exacta y 83 % con un nivel de diferencia como máximo.
 - **US22** – Toda creación, modificación o eliminación exitosa queda registrada en la tabla `auditoria`.
 
 - **Auditoría de registro** – Todo registro (alojamiento, huésped, reserva, pago, servicio, incidencia y evidencia)

@@ -61,6 +61,7 @@ hash con sal, así ni siquiera nosotros podemos ver la contraseña original."
 | US10 | Ciclo del servicio ASIGNADO → ACEPTADO/RECHAZADO → EN_PROCESO → COMPLETADO | Mapa `TRANSICIONES` en `ServicioServiceImpl` |
 | US11 | No se completa con ítems obligatorios del checklist pendientes | `ServicioServiceImpl.validarCierre()` |
 | US12 | No se completa sin al menos una foto; solo JPG/PNG/WEBP de hasta 5 MB | `validarCierre()` y `EvidenciaServiceImpl.subir()` |
+| US17 | La IA sugiere categoría y prioridad de una incidencia | `IaIncidenciaServiceImpl` (modelo `NaiveBayesTexto` + `Tokenizador`) |
 | US22 | Toda creación, edición o eliminación queda en la tabla `auditoria` | `AuditoriaInterceptor` (se ejecuta después de cada petición) |
 | — | `idUsuario` (quién registra) es obligatorio y debe ser el usuario del token | `UsuarioActual.verificarRegistrante()` |
 
@@ -118,12 +119,29 @@ usuario puede escribir las coordenadas a mano.
 
 ---
 
+## 6.1 Inteligencia artificial (US17)
+
+**Problema:** al reportar una incidencia, la categoría y la prioridad se eligen a ojo y a veces mal; una fuga de gas
+puede quedar como prioridad baja. **Solución:** al escribir la descripción, la API sugiere ambas con su confianza.
+
+- **Modelo:** Naive Bayes multinomial (implementación propia en `com.hotel.ia`, sin librerías externas), con suavizado de Laplace.
+  Elige la clase con mayor `log P(clase) + Σ log P(palabra | clase)`.
+- **Características:** palabras sin tildes ni palabras vacías, pares de palabras ("no_cierra", porque la negación cambia el sentido)
+  y grupos de palabras del dominio (gravedad y área) para generalizar con pocos datos.
+- **Datos:** 117 incidencias de ejemplo etiquetadas (`ia/incidencias-entrenamiento.csv`) más las incidencias registradas en la base
+  de datos. `POST /ia/incidencias/reentrenar` (ADMIN) vuelve a entrenar: el modelo mejora con el uso.
+- **Precisión** (validación dejando un ejemplo fuera, `GET /ia/incidencias/modelo`): categoría 74 % (azar: 20 %), prioridad 47 % exacta
+  y 83 % con un nivel de diferencia como máximo (azar exacto: 25 %).
+- **Beneficio:** la incidencia crítica se atiende antes, el personal escribe menos y los reportes quedan más consistentes.
+- **Cómo explicarlo:** "El modelo cuenta qué palabras aparecen más en cada categoría y prioridad; para una descripción nueva suma esas
+  probabilidades y elige la mayor. La persona siempre puede cambiar la sugerencia".
+
 ## 7. Pruebas
 
 | Tipo | Dónde | Resultado |
 |---|---|---|
-| Unitarias (JUnit 5 + Mockito) | `src/test/java/com/hotel/...` | 24 pruebas: duplicados, solapamiento, fechas, precio, ciclo del servicio, checklist, evidencia, personal inactivo, idUsuario |
-| API (Postman) | `pruebas-api/Nido.postman_collection.json` | 95 peticiones en 17 carpetas (una por HU), 126 validaciones |
+| Unitarias (JUnit 5 + Mockito) | `src/test/java/com/hotel/...` | 39 pruebas: IA, duplicados, solapamiento, fechas, precio, ciclo del servicio, checklist, evidencia, personal inactivo, idUsuario |
+| API (Postman) | `pruebas-api/Nido.postman_collection.json` | 101 peticiones en 18 carpetas (una por HU), 137 validaciones |
 | Reporte | `pruebas-api/reporte-pruebas.html` | Generado con Newman |
 
 **Cómo explicarlo:** "Las pruebas unitarias usan Mockito para simular los repositorios, así probamos la regla de

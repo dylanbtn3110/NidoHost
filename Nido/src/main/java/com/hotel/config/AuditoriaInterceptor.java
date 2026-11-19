@@ -36,7 +36,7 @@ public class AuditoriaInterceptor implements HandlerInterceptor {
         };
         String uri = request.getRequestURI();
         if (operacion == null || ex != null || response.getStatus() >= 300
-                || !uri.startsWith(PREFIJO) || uri.startsWith(PREFIJO + "auth")) {
+                || !uri.startsWith(PREFIJO) || uri.startsWith(PREFIJO + "auth") || uri.endsWith("/sugerencia")) {
             return;
         }
         String[] partes = uri.substring(PREFIJO.length()).split("/");
